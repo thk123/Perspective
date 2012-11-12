@@ -18,22 +18,52 @@ namespace Perspective
 
         public Position(params float[] startingPositions)
         {
-            positions = new List<float>(startingPositions.Length);
+            positions = new List<float>(startingPositions);
+        }
+
+        public Position(int dimensions)
+        {
+            positions = new List<float>(dimensions);
+
+            for (int i = 0; i < dimensions; ++i)
+            {
+                positions[i] = defaultPosition;
+            }
         }
 
         public float GetPosition(int dimension)
         {
-            return defaultPosition;
+            if (dimension > positions.Count)
+            {
+                return defaultPosition;
+            }
+            else
+            {
+                return positions[dimension];
+            }
+
         }
 
         public void SetPosition(int dimesion, float position)
         {
+            if (dimesion > positions.Count)
+            {
+                while (dimesion > positions.Count - 1)
+                {
+                    positions.Add(defaultPosition);
+                }
 
+                positions.Add(position);
+            }
+            else
+            {
+                positions[dimesion] = position;
+            }
         }
 
         public void Move(int dimension, float velocity)
         {
-
+            SetPosition(dimension, GetPosition(dimension) + velocity);
         }
     }
 }
