@@ -21,6 +21,7 @@ namespace Perspective
 
         DimensionalManager dimensionalManager;
         Player player;
+        EnemyManager enemyManager;
 
         public Game1()
         {
@@ -45,6 +46,7 @@ namespace Perspective
             base.Initialize();
 
             player = new Player(new Position(1));
+            enemyManager = new EnemyManager();
         }
 
         /// <summary>
@@ -83,6 +85,7 @@ namespace Perspective
             dimensionalManager.Update(gameTime);
 
             player.detectInput(Keyboard.GetState());
+            enemyManager.MoveEnemies();
             base.Update(gameTime);
         }
 
