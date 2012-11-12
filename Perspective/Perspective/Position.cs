@@ -21,17 +21,17 @@ namespace Perspective
             positions = new List<float>(startingPositions.Length);
         }
 
-        float GetPosition(int dimension)
+        public float GetPosition(int dimension)
         {
             return defaultPosition;
         }
 
-        void SetPosition(int dimesion, float position)
+        public void SetPosition(int dimesion, float position)
         {
 
         }
 
-        void Move(int dimension, float velocity)
+        public void Move(int dimension, float velocity)
         {
 
         }
