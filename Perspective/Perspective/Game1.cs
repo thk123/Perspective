@@ -19,12 +19,16 @@ namespace Perspective
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        DimensionalManager dimensionalManager;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 700;
             graphics.PreferredBackBufferHeight = 700;
             Content.RootDirectory = "Content";
+
+            dimensionalManager = new DimensionalManager();
         }
 
         /// <summary>
@@ -35,8 +39,8 @@ namespace Perspective
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
+            StartNewGame();
             base.Initialize();
         }
 
@@ -68,11 +72,12 @@ namespace Perspective
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (CheckExit())
+            {
                 this.Exit();
+            }
 
-            // TODO: Add your update logic here
+            dimensionalManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -85,9 +90,22 @@ namespace Perspective
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
 
+            dimensionalManager.Draw(spriteBatch);
+
+            spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void StartNewGame()
+        {
+            dimensionalManager.StartNewGame(1);
+        }
+
+        private bool CheckExit()
+        {
+            return Keyboard.GetState().IsKeyDown(Keys.Escape);
         }
     }
 }
