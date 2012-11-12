@@ -22,6 +22,8 @@ namespace Perspective
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 700;
+            graphics.PreferredBackBufferHeight = 700;
             Content.RootDirectory = "Content";
         }
 
