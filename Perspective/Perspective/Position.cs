@@ -16,9 +16,9 @@ namespace Perspective
 
         List<float> positions;
 
-        public Position(params float[] positions)
+        public Position(params float[] startingPositions)
         {
-            positions = new List<float>(positions.Length);
+            positions = new List<float>(startingPositions.Length);
         }
 
         float GetPosition(int dimension)
