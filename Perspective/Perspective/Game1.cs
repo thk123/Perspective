@@ -19,6 +19,8 @@ namespace Perspective
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Player player;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -38,6 +40,8 @@ namespace Perspective
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+            player = new Player(new Position(1));
         }
 
         /// <summary>
@@ -74,6 +78,7 @@ namespace Perspective
 
             // TODO: Add your update logic here
 
+            player.detectInput(Keyboard.GetState());
             base.Update(gameTime);
         }
 
