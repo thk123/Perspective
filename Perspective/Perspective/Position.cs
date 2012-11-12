@@ -14,23 +14,24 @@ namespace Perspective
     {
         private const float defaultPosition = 0;
 
+        List<float> positions;
 
-        public Position(params Vector2[] positions)
+        public Position(params float[] positions)
         {
-            
+            positions = new List<float>(positions.Length);
         }
 
-        Vector2 GetPosition(int dimension)
+        float GetPosition(int dimension)
         {
-            return new Vector2(0,0);
+            return defaultPosition;
         }
 
-        void SetPosition(int dimesion, Vector2 position)
+        void SetPosition(int dimesion, float position)
         {
 
         }
 
-        void Move(int dimension, Vector2 velocity)
+        void Move(int dimension, float velocity)
         {
 
         }
