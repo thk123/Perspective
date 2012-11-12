@@ -20,6 +20,7 @@ namespace Perspective
         SpriteBatch spriteBatch;
 
         DimensionalManager dimensionalManager;
+        Player player;
 
         public Game1()
         {
@@ -42,6 +43,8 @@ namespace Perspective
 
             StartNewGame();
             base.Initialize();
+
+            player = new Player(new Position(1));
         }
 
         /// <summary>
@@ -79,6 +82,7 @@ namespace Perspective
 
             dimensionalManager.Update(gameTime);
 
+            player.detectInput(Keyboard.GetState());
             base.Update(gameTime);
         }
 
