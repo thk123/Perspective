@@ -8,21 +8,15 @@ namespace Perspective
     class Enemy
     {
         Position pos;
-        List<float> velocities;
         public Enemy(Position pos)
         {
             this.pos = pos;
         }
 
-        public Position GetPosition()
-        {
-            return pos;
-        }
-
-        public void Move()
+        public void Move(DimensionalManager dm)
         {
             Random random = new Random();
-            for (int i = 0; i < DimensionalManager.GetNumberOfActiveDimensions(); ++i)
+            for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
             {
                 pos.Move(i, random.Next());
             }

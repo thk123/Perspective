@@ -43,6 +43,16 @@ namespace Perspective
             }
         }
 
+        public int GetScreenHeight()
+        {
+            return 20;
+        }
+
+        public int GetScreenWidth()
+        {
+            return 20;
+        }
+
         public void Update(GameTime gameTime)
         {
 

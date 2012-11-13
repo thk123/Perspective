@@ -88,8 +88,8 @@ namespace Perspective
             dimensionalManager.Update(gameTime);
 
             player.detectInput(Keyboard.GetState());
-            enemyManager.removeEnemies();
-            enemyManager.MoveEnemies();
+            enemyManager.removeEnemies(dimensionalManager);
+            enemyManager.MoveEnemies(dimensionalManager);
 
             base.Update(gameTime);
         }
