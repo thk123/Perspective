@@ -21,5 +21,15 @@ namespace Perspective
                 pos.Move(i, random.Next());
             }
         }
+
+        public Position GetPosition()
+        {
+            return pos;
+        }
+
+        public float GetWidth(int dimension)
+        {
+            return 1.0f; //return a standard width
+        }
     }
 }
