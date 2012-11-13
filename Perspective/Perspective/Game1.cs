@@ -22,11 +22,14 @@ namespace Perspective
         Player player;
         EnemyManager enemyManager;
 
+        public static int SCREEN_WIDTH = 700;
+        public static int SCREEN_HEIGHT = 700;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 700;
-            graphics.PreferredBackBufferHeight = 700;
+            graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
+            graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             Content.RootDirectory = "Content";
         }
 
@@ -81,7 +84,9 @@ namespace Perspective
             // TODO: Add your update logic here
 
             player.detectInput(Keyboard.GetState());
+            enemyManager.removeEnemies();
             enemyManager.MoveEnemies();
+
             base.Update(gameTime);
         }
 

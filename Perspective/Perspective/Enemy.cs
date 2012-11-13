@@ -8,9 +8,15 @@ namespace Perspective
     class Enemy
     {
         Position pos;
+        List<float> velocities;
         public Enemy(Position pos)
         {
             this.pos = pos;
+        }
+
+        public Position GetPosition()
+        {
+            return pos;
         }
 
         public void Move()

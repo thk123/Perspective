@@ -15,6 +15,25 @@ namespace Perspective
             enemies = new ArrayList();
         }
 
+        public void removeEnemies()
+        {
+            foreach (Enemy en in enemies)
+            {
+                int count = 0;
+                for (int i = 0; i < DimensionalManager.GetNumberOfActiveDimensions(); ++i)
+                {
+                    if (en.GetPosition().GetPosition(i) + 20 > (i % 2 == 0 ? DimensionalManager.GetScreenHeight() : DimensionalManager.GetScreenHeightWidth()))
+                    {
+                        ++count;
+                    }
+                }
+                if (count == DimensionalManager.GetNumberOfActiveDimensions())
+                {
+                    removeEnemy(en);
+                }
+            }
+        }
+
         public void addEnemy(Enemy n)
         {
             enemies.Add(n);
