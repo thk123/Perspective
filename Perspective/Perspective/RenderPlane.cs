@@ -43,31 +43,45 @@ namespace Perspective
             planePosition = newPosition;
         }
 
-        public void Render(Enemy enemy, SpriteBatch spriteBatch)
+        public void Render(EnemyManager enemyManager, SpriteBatch spriteBatch)
         {
             //Draw background square
             spriteBatch.Draw(Game1.square, renderTarget, bg);
 
-
-            Position enemyPosition = enemy.GetPosition();
-            Vector2 planarPosition;
-            if (render2d)
+            foreach (Enemy enemy in enemyManager.getEnemies())
             {
-                planarPosition = new Vector2(enemyPosition.GetPosition(xDimension), enemyPosition.GetPosition(yDimension));
-            }
-            else
-            {
-                planarPosition = new Vector2(enemyPosition.GetPosition(xDimension), 0 );
-            }
+                Position enemyPosition = enemy.GetPosition();
+                Vector2 planarPosition;
+                if (render2d)
+                {
+                    planarPosition = new Vector2(enemyPosition.GetPosition(xDimension), enemyPosition.GetPosition(yDimension));
+                }
+                else
+                {
+                    planarPosition = new Vector2(enemyPosition.GetPosition(xDimension), 0);
+                }
 
-            //if we are rendering in 1D, the GetSize takes in to account the distance in the y axis
-            float size = GetSize(enemy);
+                //if we are rendering in 1D, the GetSize takes in to account the distance in the y axis
+                float size = GetSize(enemy);
 
-            if (IsInRenderFrame(planarPosition, size))
-            {
-                Vector2 drawPosition = GetScaledPosition(planarPosition);
+                if (IsInRenderFrame(planarPosition, size))
+                {
+                    Vector2 drawPosition = GetScaledPosition(planarPosition);
 
-                spriteBatch.Draw(Game1.cirlce, drawPosition, Color.Red);
+                    switch (enemy.GetEnemyType())
+                    {
+                        case EnemyType.StraightLine:
+                            {
+                                spriteBatch.Draw(Game1.circle, drawPosition, Color.Red);
+                                break;
+                            }
+                        case EnemyType.Random:
+                            {
+                                spriteBatch.Draw(Game1.circle, drawPosition, Color.Black);
+                                break;
+                            }
+                    }
+                }
             }
         }
 

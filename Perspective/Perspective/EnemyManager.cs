@@ -8,21 +8,22 @@ namespace Perspective
 {
     class EnemyManager
     {
-        ArrayList enemies;
+        List<Enemy> enemies;
 
         public EnemyManager()
         {
-            enemies = new ArrayList();
+            enemies = new List<Enemy>();
         }
 
         public void removeEnemies(DimensionalManager dm)
         {
-            foreach (Enemy en in enemies)
+            for (int j = 0; j<enemies.Count; ++j)
             {
+                Enemy en = enemies.ElementAt<Enemy>(j);
                 int count = 0;
                 for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
                 {
-                    if (en.GetPosition().GetPosition(i) + 20 > (i % 2 == 0 ? dm.GetScreenHeight() : dm.GetScreenWidth()))
+                    if (Math.Abs(en.GetPosition().GetPosition(i) + 20) > (i % 2 == 0 ? dm.GetScreenHeight() : dm.GetScreenWidth()))
                     {
                         ++count;
                     }
@@ -34,8 +35,9 @@ namespace Perspective
             }
         }
 
-        public void addEnemy(Enemy n)
+        public void addEnemy(EnemyType type, Position pos)
         {
+            Enemy n = new Enemy(pos, type);
             enemies.Add(n);
         }
 
@@ -51,5 +53,16 @@ namespace Perspective
                 enemy.Move(dm);
             }
         }
+
+        public List<Enemy> getEnemies()
+        {
+            return enemies;
+        }
+    }
+
+    public enum EnemyType
+    {
+        Random,
+        StraightLine
     }
 }

@@ -24,7 +24,7 @@ namespace Perspective
         EnemyManager enemyManager;
 
         //ugly
-        public static Texture2D cirlce;
+        public static Texture2D circle;
         public static Texture2D square;
         public static int SCREEN_WIDTH = 700;
         public static int SCREEN_HEIGHT = 700;
@@ -36,8 +36,6 @@ namespace Perspective
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             Content.RootDirectory = "Content";
-
-            dimensionalManager = new DimensionalManager();
         }
 
         /// <summary>
@@ -48,12 +46,11 @@ namespace Perspective
         /// </summary>
         protected override void Initialize()
         {
-
-            StartNewGame();
-            base.Initialize();
-
             player = new Player(new Position(1));
             enemyManager = new EnemyManager();
+            dimensionalManager = new DimensionalManager(enemyManager);
+            StartNewGame();
+            base.Initialize();
         }
 
         /// <summary>
@@ -65,7 +62,7 @@ namespace Perspective
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Game1.cirlce = Content.Load<Texture2D>("Art//WhiteCircle");
+            Game1.circle = Content.Load<Texture2D>("Art//WhiteCircle");
             Game1.square = Content.Load<Texture2D>("Art//WhiteSquare");
         }
 
@@ -90,7 +87,7 @@ namespace Perspective
                 this.Exit();
             }
 
-            dimensionalManager.Update(gameTime);
+            //dimensionalManager.Update(gameTime);
 
             player.detectInput(Keyboard.GetState());
             enemyManager.removeEnemies(dimensionalManager);

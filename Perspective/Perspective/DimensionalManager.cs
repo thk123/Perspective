@@ -12,8 +12,9 @@ namespace Perspective
         private int numberOfActiveDimensions;
 
         List<RenderPlane> renderPlanes;
-        Enemy a;
-        public DimensionalManager()
+        EnemyManager enemyManager;
+
+        public DimensionalManager(EnemyManager enemyManager)
         {
             numberOfActiveDimensions = 2;
             renderPlanes = new List<RenderPlane>();
@@ -22,13 +23,17 @@ namespace Perspective
             secondRenderPlane.SetRender2D(true);
             renderPlanes.Add(startingRenderPlane);
             renderPlanes.Add(secondRenderPlane);
+
+            this.enemyManager = enemyManager;
         }
 
         public void StartNewGame(int startingDimensionCount)
         {
             numberOfActiveDimensions = startingDimensionCount;
 
-            a = new Enemy(new Position(0.0f, 0.0f, 0.0f));
+
+            enemyManager.addEnemy(EnemyType.Random, new Position(0.0f, 0.0f, 0.0f) + new Position(5f, 5f));
+            enemyManager.addEnemy(EnemyType.StraightLine, new Position(0.0f, 0.0f, 0.0f));
         }
 
         public int GetNumberOfActiveDimensions()
@@ -55,24 +60,24 @@ namespace Perspective
 
         public int GetScreenHeight()
         {
-            return 20;
+            return 350;
         }
 
         public int GetScreenWidth()
         {
-            return 20;
+            return 350;
         }
 
         public void Update(GameTime gameTime)
         {
-            a.Move(this);
+           // enemyManager.MoveEnemies(this);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (RenderPlane renderPlane in renderPlanes)
             {
-                renderPlane.Render(a, spriteBatch);
+                renderPlane.Render(enemyManager, spriteBatch);
             }
         }
     }

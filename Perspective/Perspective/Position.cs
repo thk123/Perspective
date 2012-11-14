@@ -12,6 +12,7 @@ namespace Perspective
     /// </summary>
     class Position
     {
+
         public const float defaultPosition = 0;
 
         List<float> positions;
@@ -31,6 +32,11 @@ namespace Perspective
             }
         }
 
+        public int GetNumberOfDimensions()
+        {
+            return positions.Count;
+        }
+
         public float GetPosition(int dimension)
         {
             if (dimension >= positions.Count)
@@ -44,11 +50,11 @@ namespace Perspective
 
         }
 
-        public void SetPosition(int dimesion, float position)
+        public void SetPosition(int dimension, float position)
         {
-            if (dimesion > positions.Count)
+            if (dimension > positions.Count)
             {
-                while (dimesion > positions.Count - 1)
+                while (dimension > positions.Count - 1)
                 {
                     positions.Add(defaultPosition);
                 }
@@ -57,7 +63,7 @@ namespace Perspective
             }
             else
             {
-                positions[dimesion] = position;
+                positions[dimension] = position;
             }
         }
 
@@ -70,7 +76,7 @@ namespace Perspective
         {
             StringBuilder vector = new StringBuilder();
             vector.Append("{");
-            for(int i = 0; i <positions.Count; ++i)
+            for (int i = 0; i < positions.Count; ++i)
             {
                 vector.Append(positions[i].ToString());
                 vector.Append(", ");
@@ -79,6 +85,17 @@ namespace Perspective
             vector.Append("...}");
 
             return vector.ToString();
+        }
+
+        public static Position operator +(Position position1, Position position2)
+        {
+            Position largerPos = position1.GetNumberOfDimensions() > position2.GetNumberOfDimensions() ? position1 : position2;
+            Position smallerPos = largerPos.Equals(position1) ? position2 : position1;
+            for(int current = 0; current < smallerPos.GetNumberOfDimensions(); ++current)
+            {
+                largerPos.SetPosition(current, position1.GetPosition(current) + position2.GetPosition(current));
+            }
+            return largerPos;
         }
     }
 }
