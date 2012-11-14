@@ -11,19 +11,29 @@ namespace Perspective
     {
         private int numberOfActiveDimensions;
 
+        List<RenderPlane> renderPlanes;
+        Enemy a;
         public DimensionalManager()
         {
-            numberOfActiveDimensions = 1;
+            numberOfActiveDimensions = 2;
+            renderPlanes = new List<RenderPlane>();
+            RenderPlane startingRenderPlane = new RenderPlane(new Rectangle(0,0,350,700), 0, 1, new Position(0.0f, 0.0f, 0.0f), this, Color.Red);
+            RenderPlane secondRenderPlane = new RenderPlane(new Rectangle(350, 0, 350, 700), 0, 1, new Position(0.0f, 0.0f, 0.0f), this, Color.Maroon);
+            secondRenderPlane.SetRender2D(true);
+            renderPlanes.Add(startingRenderPlane);
+            renderPlanes.Add(secondRenderPlane);
         }
 
         public void StartNewGame(int startingDimensionCount)
         {
             numberOfActiveDimensions = startingDimensionCount;
+
+            a = new Enemy(new Position(0.0f, 0.0f, 0.0f));
         }
 
         public int GetNumberOfActiveDimensions()
         {
-            return numberOfActiveDimensions;
+            return 3;
         }
 
         public bool CanIncreaseNumberOfActiveDimensions()
@@ -45,12 +55,15 @@ namespace Perspective
 
         public void Update(GameTime gameTime)
         {
-
+            a.Move(this);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            foreach (RenderPlane renderPlane in renderPlanes)
+            {
+                renderPlane.Render(a, spriteBatch);
+            }
         }
     }
 }

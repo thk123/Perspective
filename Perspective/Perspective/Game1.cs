@@ -23,6 +23,10 @@ namespace Perspective
         Player player;
         EnemyManager enemyManager;
 
+        //ugly
+        public static Texture2D cirlce;
+        public static Texture2D square;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -58,7 +62,8 @@ namespace Perspective
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            Game1.cirlce = Content.Load<Texture2D>("Art//WhiteCircle");
+            Game1.square = Content.Load<Texture2D>("Art//WhiteSquare");
         }
 
         /// <summary>

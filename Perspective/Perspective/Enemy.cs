@@ -13,13 +13,16 @@ namespace Perspective
             this.pos = pos;
         }
 
-        public void Move()
+        public void Move(DimensionalManager dimensionalManager)
         {
-            Random random = new Random();
-            for (int i = 0; i < DimensionalManager.GetNumberOfActiveDimensions(); ++i)
+            /*Random random = new Random();
+            for (int i = 0; i < dimensionalManager.GetNumberOfActiveDimensions(); ++i)
             {
                 pos.Move(i, random.Next());
-            }
+            }*/
+            pos.Move(1, 0.1f);
+            pos.Move(0, 0.1f);
+            //pos.Move(2, 0.1f);
         }
 
         public Position GetPosition()
@@ -29,7 +32,7 @@ namespace Perspective
 
         public float GetWidth(int dimension)
         {
-            return 1.0f; //return a standard width
+            return 32.0f; //return a standard width
         }
     }
 }

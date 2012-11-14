@@ -29,7 +29,7 @@ namespace Perspective
         {
             foreach (Enemy enemy in enemies)
             {
-                enemy.Move();
+                //enemy.Move();
             }
         }
     }

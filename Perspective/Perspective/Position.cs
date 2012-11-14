@@ -12,7 +12,7 @@ namespace Perspective
     /// </summary>
     class Position
     {
-        private const float defaultPosition = 0;
+        public const float defaultPosition = 0;
 
         List<float> positions;
 
@@ -27,13 +27,13 @@ namespace Perspective
 
             for (int i = 0; i < dimensions; ++i)
             {
-                positions[i] = defaultPosition;
+                positions.Add(defaultPosition);
             }
         }
 
         public float GetPosition(int dimension)
         {
-            if (dimension > positions.Count)
+            if (dimension >= positions.Count)
             {
                 return defaultPosition;
             }
@@ -64,6 +64,21 @@ namespace Perspective
         public void Move(int dimension, float velocity)
         {
             SetPosition(dimension, GetPosition(dimension) + velocity);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder vector = new StringBuilder();
+            vector.Append("{");
+            for(int i = 0; i <positions.Count; ++i)
+            {
+                vector.Append(positions[i].ToString());
+                vector.Append(", ");
+            }
+
+            vector.Append("...}");
+
+            return vector.ToString();
         }
     }
 }
