@@ -26,12 +26,15 @@ namespace Perspective
         //ugly
         public static Texture2D cirlce;
         public static Texture2D square;
+        public static int SCREEN_WIDTH = 700;
+        public static int SCREEN_HEIGHT = 700;
+
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 700;
-            graphics.PreferredBackBufferHeight = 700;
+            graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
+            graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             Content.RootDirectory = "Content";
 
             dimensionalManager = new DimensionalManager();
@@ -90,7 +93,9 @@ namespace Perspective
             dimensionalManager.Update(gameTime);
 
             player.detectInput(Keyboard.GetState());
-            enemyManager.MoveEnemies();
+            enemyManager.removeEnemies(dimensionalManager);
+            enemyManager.MoveEnemies(dimensionalManager);
+
             base.Update(gameTime);
         }
 

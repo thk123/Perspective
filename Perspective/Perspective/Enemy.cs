@@ -13,10 +13,10 @@ namespace Perspective
             this.pos = pos;
         }
 
-        public void Move(DimensionalManager dimensionalManager)
+        public void Move(DimensionalManager dm)
         {
             /*Random random = new Random();
-            for (int i = 0; i < dimensionalManager.GetNumberOfActiveDimensions(); ++i)
+            for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
             {
                 pos.Move(i, random.Next());
             }*/

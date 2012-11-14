@@ -15,6 +15,25 @@ namespace Perspective
             enemies = new ArrayList();
         }
 
+        public void removeEnemies(DimensionalManager dm)
+        {
+            foreach (Enemy en in enemies)
+            {
+                int count = 0;
+                for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
+                {
+                    if (en.GetPosition().GetPosition(i) + 20 > (i % 2 == 0 ? dm.GetScreenHeight() : dm.GetScreenWidth()))
+                    {
+                        ++count;
+                    }
+                }
+                if (count == dm.GetNumberOfActiveDimensions())
+                {
+                    removeEnemy(en);
+                }
+            }
+        }
+
         public void addEnemy(Enemy n)
         {
             enemies.Add(n);
@@ -25,11 +44,11 @@ namespace Perspective
             enemies.Remove(n);
         }
 
-        public void MoveEnemies()
+        public void MoveEnemies(DimensionalManager dm)
         {
             foreach (Enemy enemy in enemies)
             {
-                //enemy.Move();
+                enemy.Move(dm);
             }
         }
     }
