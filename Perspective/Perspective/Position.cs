@@ -52,7 +52,7 @@ namespace Perspective
 
         public void SetPosition(int dimension, float position)
         {
-            if (dimension > positions.Count)
+            if (dimension >= positions.Count)
             {
                 while (dimension > positions.Count - 1)
                 {

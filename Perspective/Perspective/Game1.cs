@@ -87,9 +87,9 @@ namespace Perspective
                 this.Exit();
             }
 
-            //dimensionalManager.Update(gameTime);
+            dimensionalManager.Update(gameTime, player);
 
-            player.detectInput(Keyboard.GetState());
+            player.detectInput(Keyboard.GetState(), dimensionalManager);
             enemyManager.removeEnemies(dimensionalManager);
             enemyManager.MoveEnemies(dimensionalManager);
 
@@ -106,7 +106,7 @@ namespace Perspective
 
             spriteBatch.Begin();
 
-            dimensionalManager.Draw(spriteBatch);
+            dimensionalManager.Draw(spriteBatch, player);
 
             spriteBatch.End();
             base.Draw(gameTime);

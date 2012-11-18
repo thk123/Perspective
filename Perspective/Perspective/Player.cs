@@ -18,31 +18,39 @@ namespace Perspective
         Position pos;
         float velocity = 2.0f;
 
+        KeyboardState oldState;
+
         public Player(Position pos)
         {
             this.pos = pos;
+            oldState = Keyboard.GetState();
         }
 
-        public void detectInput(KeyboardState kboard)
+        public Position getPosition()
+        {
+            return pos;
+        }
+
+        public void detectInput(KeyboardState kboard, DimensionalManager dm)
         {
             if (kboard.IsKeyDown(Keys.W))
             {
-                pos.Move(currentDimension, -velocity);
+                pos.Move(currentDimension + 1, -velocity);
             }
             if (kboard.IsKeyDown(Keys.S))
             {
-                pos.Move(currentDimension, velocity);
+                pos.Move(currentDimension + 1, velocity);
             }
 
             if(true)
             {
                 if (kboard.IsKeyDown(Keys.A))
                 {
-                    pos.Move(currentDimension + 1, velocity);
+                    pos.Move(currentDimension, -velocity);
                 }
                 if (kboard.IsKeyDown(Keys.D))
                 {
-                    pos.Move(currentDimension + 1, -velocity);
+                    pos.Move(currentDimension, velocity);
                 }
             }
 
@@ -50,29 +58,32 @@ namespace Perspective
             {
                 if(kboard.IsKeyDown(Keys.Up))
                 {
-                    pos.Move(currentDimension + 2, -velocity);
+                    pos.Move(currentDimension + 3, -velocity);
                 }
                 if (kboard.IsKeyDown(Keys.Down))
                 {
-                    pos.Move(currentDimension + 2, velocity);
+                    pos.Move(currentDimension + 3, velocity);
                 }
             }
             if(true)
             {
                 if (kboard.IsKeyDown(Keys.Right))
                 {
-                    pos.Move(currentDimension + 3, velocity);
+                    pos.Move(currentDimension + 2, velocity);
                 }
                 if (kboard.IsKeyDown(Keys.Left))
                 {
-                    pos.Move(currentDimension + 3, -velocity);
+                    pos.Move(currentDimension + 2, -velocity);
                 }
             }
 
-            if (kboard.IsKeyDown(Keys.Space))
+            if (kboard.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space) )
             {
-                currentDimension = true ? currentDimension + 4 : 0; 
+                //currentDimension = currentDimension + 4 <= dm.GetNumberOfActiveDimensions() ? currentDimension + 4 : 0;
+                dm.IncreaseNumberOfActiveDimensions();
             }
+
+            oldState = kboard;
             
         }
     }

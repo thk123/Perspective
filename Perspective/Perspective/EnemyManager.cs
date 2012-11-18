@@ -23,7 +23,7 @@ namespace Perspective
                 int count = 0;
                 for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
                 {
-                    if (Math.Abs(en.GetPosition().GetPosition(i) + 20) > (i % 2 == 0 ? dm.GetScreenHeight() : dm.GetScreenWidth()))
+                    if (Math.Abs(en.GetPosition().GetPosition(i)) > (i % 2 == 0 ? dm.GetScreenHeight() : dm.GetScreenWidth()))
                     {
                         ++count;
                     }
