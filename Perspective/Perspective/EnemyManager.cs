@@ -63,6 +63,8 @@ namespace Perspective
     public enum EnemyType
     {
         Random,
-        StraightLine
+        StraightLine,
+        ZigZag0,
+        ZigZag1
     }
 }

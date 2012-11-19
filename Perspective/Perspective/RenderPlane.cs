@@ -78,7 +78,7 @@ namespace Perspective
                                 renderPosition(spriteBatch, drawPosition, Color.Red, size);
                                 break;
                             }
-                        case EnemyType.Random:
+                        default:
                             {
                                 renderPosition(spriteBatch, drawPosition, Color.Black, size);
                                 break;

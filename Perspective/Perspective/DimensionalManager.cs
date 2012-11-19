@@ -39,9 +39,9 @@ namespace Perspective
                 addRenderPlane();
             }
 
-            enemyManager.addEnemy(EnemyType.Random, new Position(0.0f, 0.0f, 0.0f) + new Position(5f, 5f));
+            enemyManager.addEnemy(EnemyType.ZigZag0, new Position(0.0f, 0.0f, 0.0f) + new Position(30f, 30f));
             enemyManager.addEnemy(EnemyType.StraightLine, new Position(0.0f, 0.0f, 0.0f));
-
+            enemyManager.addEnemy(EnemyType.ZigZag1, new Position(0.0f, 0.0f, 0.0f));
 
         }
 
