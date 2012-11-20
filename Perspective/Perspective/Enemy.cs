@@ -26,7 +26,7 @@ namespace Perspective
             this.damageAmount = damageAmount;
         }
 
-        public void Move(DimensionalManager dm)
+        public virtual void Move(DimensionalManager dm)
         {
             while (forwards.Count <= dm.GetNumberOfActiveDimensions())
             {
@@ -45,9 +45,9 @@ namespace Perspective
             return type;
         }
 
-        public float GetWidth(int dimension)
+        public float GetWidth()
         {
-            return 32.0f; //return a standard width
+            return 16.0f; //return a standard width
         }
 
         public int GetDamageAmount()

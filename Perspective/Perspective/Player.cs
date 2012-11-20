@@ -22,10 +22,16 @@ namespace Perspective
 
         KeyboardState oldState;
 
+        private const float startingHealth = 100.0f;
+
+        private float currentHealth;
+
         public Player(Position pos)
         {
             this.pos = pos;
             oldState = Keyboard.GetState();
+
+            currentHealth = startingHealth;
         }
 
         public Position getPosition()
@@ -36,6 +42,17 @@ namespace Perspective
         public float getRadius()
         {
             return 16.0f;
+        }
+
+        public bool ApplyDamage(float damage)
+        {
+            currentHealth -= damage;
+            return currentHealth <= 0.0f;
+        }
+
+        public float GetCurrentHealth()
+        {
+            return currentHealth;
         }
 
         public void detectInput(KeyboardState kboard, DimensionalManager dm)

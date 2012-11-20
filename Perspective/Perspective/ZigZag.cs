@@ -14,13 +14,13 @@ namespace Perspective
             this.dimToMoveIn = dimToMoveIn;
         }
 
-        public void Move(DimensionalManager dm)
+        public override void Move(DimensionalManager dm)
         {
             base.Move(dm);
             for (int i = dimToMoveIn; i <= dm.GetNumberOfActiveDimensions(); i += 2)
                 {
                     pos.Move(i, forwards[i] * 1f);
-                    if (Math.Abs(pos.GetPosition(i)) >= 3 * GetWidth(i) && System.DateTime.Now.CompareTo(deathTime) < 0)
+                    if (Math.Abs(pos.GetPosition(i)) >= 3 * GetWidth() && System.DateTime.Now.CompareTo(deathTime) < 0)
                     {
                         forwards[i] = -forwards[i];
                     }

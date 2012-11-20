@@ -100,7 +100,10 @@ namespace Perspective
             {
                 if (CollisionManager.CheckCollision(player, enemy, dimensionalManager))
                 {
-                    Console.WriteLine("DEAD at " + gameTime.TotalGameTime.ToString());
+                    if(player.ApplyDamage(enemy.GetDamageAmount()))
+                    {
+                        Console.WriteLine("DIE");
+                    }
                 }
             }
 
@@ -120,6 +123,10 @@ namespace Perspective
             dimensionalManager.Draw(spriteBatch, player);
 
             drawLocation(spriteBatch, player.getPosition());
+
+            String playerHealthString = "Health: " + player.GetCurrentHealth();
+            Vector2 playerHealthStringPosition = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) - defaultFont14.MeasureString(playerHealthString);
+            spriteBatch.DrawString(defaultFont14, playerHealthString, playerHealthStringPosition, Color.Red);
 
             spriteBatch.End();
             base.Draw(gameTime);
