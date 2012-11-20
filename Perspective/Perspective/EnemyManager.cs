@@ -41,6 +41,12 @@ namespace Perspective
             enemies.Add(n);
         }
 
+        public void addEnemy(EnemyType type, Position pos, int lifeTime)
+        {
+            Enemy n = new Enemy(pos, type, lifeTime);
+            enemies.Add(n);
+        }
+
         public void removeEnemy(Enemy n)
         {
             enemies.Remove(n);

@@ -33,28 +33,28 @@ namespace Perspective
 
         public void detectInput(KeyboardState kboard, DimensionalManager dm)
         {
-            if (kboard.IsKeyDown(Keys.W))
+            if (kboard.IsKeyDown(Keys.A))
             {
-                pos.Move(currentDimension + 1, -velocity);
+                pos.Move(currentDimension, -velocity);
             }
-            if (kboard.IsKeyDown(Keys.S))
+            if (kboard.IsKeyDown(Keys.D))
             {
-                pos.Move(currentDimension + 1, velocity);
-            }
-
-            if(true)
-            {
-                if (kboard.IsKeyDown(Keys.A))
-                {
-                    pos.Move(currentDimension, -velocity);
-                }
-                if (kboard.IsKeyDown(Keys.D))
-                {
-                    pos.Move(currentDimension, velocity);
-                }
+                pos.Move(currentDimension, velocity);
             }
 
-            if(true/*&&enough dimensions*/)
+            if (dm.GetNumberOfActiveDimensions() > currentDimension + 1)
+            {
+                if (kboard.IsKeyDown(Keys.W))
+                {
+                    pos.Move(currentDimension + 1, -velocity);
+                }
+                if (kboard.IsKeyDown(Keys.S))
+                {
+                    pos.Move(currentDimension + 1, velocity);
+                }
+            }
+
+            if (dm.GetNumberOfActiveDimensions() > currentDimension + 3)
             {
                 if(kboard.IsKeyDown(Keys.Up))
                 {
@@ -65,7 +65,8 @@ namespace Perspective
                     pos.Move(currentDimension + 3, velocity);
                 }
             }
-            if(true)
+
+            if (dm.GetNumberOfActiveDimensions() > currentDimension + 2)
             {
                 if (kboard.IsKeyDown(Keys.Right))
                 {
