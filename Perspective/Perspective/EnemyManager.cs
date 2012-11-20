@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using Microsoft.Xna.Framework;
 
 namespace Perspective
 {
@@ -10,9 +11,29 @@ namespace Perspective
     {
         List<Enemy> enemies;
 
+        int timeSinceLastSpawn;
+        int timeSinceLastDimensionChange;
+
+        const int averageTimeBetweenSpawn = 1 * 1000;
+        const int averageTimeBetweenDimChange = 10 * 1000;
+        const int randomPrecision = 1 * 1000;
+
+        private static Random Random;
+
         public EnemyManager()
         {
             enemies = new List<Enemy>();
+
+            timeSinceLastDimensionChange = 0;
+            timeSinceLastSpawn = 0;
+
+            Random = new Random();
+        }
+
+        public void StartNewGame()
+        {
+            timeSinceLastDimensionChange = 0;
+            timeSinceLastSpawn = 0;
         }
 
         public void removeEnemies(DimensionalManager dm)
@@ -44,6 +65,45 @@ namespace Perspective
         public void removeEnemy(Enemy n)
         {
             enemies.Remove(n);
+        }
+
+        public void Update(GameTime gameTime, DimensionalManager dm)
+        {
+            timeSinceLastSpawn += gameTime.ElapsedGameTime.Milliseconds;
+            timeSinceLastDimensionChange += gameTime.ElapsedGameTime.Milliseconds;
+            
+            {
+                int distance = Math.Abs(timeSinceLastSpawn - averageTimeBetweenSpawn);
+                int spawn = Random.Next(-distance, distance);
+                if (Math.Abs(spawn) <= randomPrecision)
+                {
+                    SpawnEnemy();
+                    timeSinceLastSpawn = 0;
+                }
+            }
+
+            {
+                int distance = Math.Abs(timeSinceLastDimensionChange - averageTimeBetweenDimChange);
+                int spawn = Random.Next(-distance, distance);
+                if (Math.Abs(spawn) <= randomPrecision)
+                {
+                    AddDimension();
+                    timeSinceLastDimensionChange = 0;
+                }
+            }
+
+            removeEnemies(dm);
+            MoveEnemies(dm);
+        }
+
+        private void SpawnEnemy()
+        {
+            //TODO: Write some codez
+        }
+
+        private void AddDimension()
+        {
+           //TODO: Write some codez
         }
 
         public void MoveEnemies(DimensionalManager dm)

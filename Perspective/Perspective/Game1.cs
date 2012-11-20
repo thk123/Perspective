@@ -93,6 +93,8 @@ namespace Perspective
             enemyManager.removeEnemies(dimensionalManager);
             enemyManager.MoveEnemies(dimensionalManager);
 
+            enemyManager.Update(gameTime, dimensionalManager);
+
             base.Update(gameTime);
         }
 
