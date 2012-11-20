@@ -80,30 +80,26 @@ namespace Perspective
             
             {
                 int distance = Math.Abs(timeSinceLastSpawn - averageTimeBetweenSpawn);
-                int spawn = Random.Next(-distance, distance);
-                if (Math.Abs(spawn) <= randomPrecision)
-                {
-                    SpawnEnemy();
-                    timeSinceLastSpawn = 0;
-                }
+                int spawn = distance + Random.Next(-randomPrecision, randomPrecision);
+                SpawnEnemy(dm.GetNumberOfActiveDimensions());
+                timeSinceLastSpawn = 0;
             }
 
             {
                 int distance = Math.Abs(timeSinceLastDimensionChange - averageTimeBetweenDimChange);
-                int spawn = Random.Next(-distance, distance);
-                if (Math.Abs(spawn) <= randomPrecision)
-                {
-                    AddDimension();
-                    timeSinceLastDimensionChange = 0;
-                }
+                int spawn = distance + Random.Next(-randomPrecision, randomPrecision);
+                AddDimension();
+                timeSinceLastDimensionChange = 0;
             }
 
             removeEnemies(dm);
             MoveEnemies(dm);
         }
 
-        private void SpawnEnemy()
+        private void SpawnEnemy(int dimensions)
         {
+            int choice = Random.Next(Enum.GetNames(typeof(EnemyType)).Length);
+            addEnemy((EnemyType)choice, new Position(0.0f, 0.0f, 0.0f) + new Position(Random.Next(-350, 350), Random.Next(-350, 350)));
             //TODO: Write some codez
         }
 
@@ -124,13 +120,5 @@ namespace Perspective
         {
             return enemies;
         }
-    }
-
-    public enum EnemyType
-    {
-        Random,
-        StraightLine,
-        ZigZag0,
-        ZigZag1
     }
 }
