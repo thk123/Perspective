@@ -119,10 +119,49 @@ namespace Perspective
 
             dimensionalManager.Draw(spriteBatch, player);
 
-            spriteBatch.DrawString(defaultFont14, player.getPosition().ToString(), Vector2.Zero, Color.White);
+            drawLocation(spriteBatch, player.getPosition());
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+
+        private void drawLocation(SpriteBatch spriteBatch, Position position)
+        {
+            int getPlayerDimension = player.getCurrentDimension();
+            Vector2 stringPosition = Vector2.Zero;
+            spriteBatch.DrawString(defaultFont14, "{", stringPosition, Color.White);
+            stringPosition.X += defaultFont14.MeasureString("{").X;
+
+            string startingPoint = position.GetPosition(0).ToString();
+            spriteBatch.DrawString(defaultFont14, startingPoint, stringPosition, getIndexColour(0, getPlayerDimension));
+            stringPosition.X += defaultFont14.MeasureString(startingPoint).X;
+
+
+            for (int i = 1; i < dimensionalManager.GetNumberOfActiveDimensions(); ++i)
+            {
+                string point = ", " + position.GetPosition(i).ToString();
+                spriteBatch.DrawString(defaultFont14, point, stringPosition, getIndexColour(i, getPlayerDimension));
+                stringPosition.X += defaultFont14.MeasureString(point).X;
+            }
+
+            spriteBatch.DrawString(defaultFont14, "}", stringPosition, Color.White);
+        }
+
+        private Color getIndexColour(int index, int playerIndex)
+        {
+            if (index == playerIndex || index == playerIndex + 1)
+            {
+                return Color.Red;
+            }
+            else if (index == playerIndex + 2 || index == playerIndex + 3)
+            {
+                return Color.Blue;
+            }
+            else
+            {
+                return Color.White;
+            }
         }
 
         private void StartNewGame()
