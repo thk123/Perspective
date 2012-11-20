@@ -56,15 +56,31 @@ namespace Perspective
             }
         }
 
-        public void addEnemy(EnemyType type, Position pos)
+        public void addEnemy(EnemyType type, Position pos, int lifetime = 10 * 1000, int maxDimensionOfMovement = int.MaxValue)
         {
-            Enemy n = new Enemy(pos, type);
-            enemies.Add(n);
-        }
-
-        public void addEnemy(EnemyType type, Position pos, int lifeTime)
-        {
-            Enemy n = new Enemy(pos, type, lifeTime);
+            Enemy n;
+            switch (type)
+            {
+                case EnemyType.ZigZag0:
+                    {
+                        n = new ZigZag(type, pos, 0, lifetime, maxDimensionOfMovement);
+                        break;
+                    }
+                case EnemyType.ZigZag1:
+                    {
+                        n = new ZigZag(type, pos, 1, lifetime, maxDimensionOfMovement);
+                        break;
+                    }
+                case EnemyType.StraightLine:
+                    {
+                        n = new StraightLineEnemy(type, pos, lifetime, maxDimensionOfMovement);
+                        break;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
+            }
             enemies.Add(n);
         }
 
@@ -79,28 +95,34 @@ namespace Perspective
             timeSinceLastDimensionChange += gameTime.ElapsedGameTime.Milliseconds;
             
             {
-                int distance = Math.Abs(timeSinceLastSpawn - averageTimeBetweenSpawn);
-                int spawn = distance + Random.Next(-randomPrecision, randomPrecision);
-                SpawnEnemy(dm.GetNumberOfActiveDimensions());
-                timeSinceLastSpawn = 0;
+                int spawn = Random.Next(-randomPrecision, randomPrecision);
+                if (timeSinceLastSpawn + spawn > averageTimeBetweenSpawn)
+                {
+                    SpawnEnemy(dm);
+                    timeSinceLastSpawn = 0;
+                }
             }
 
             {
-                int distance = Math.Abs(timeSinceLastDimensionChange - averageTimeBetweenDimChange);
-                int spawn = distance + Random.Next(-randomPrecision, randomPrecision);
-                AddDimension();
-                timeSinceLastDimensionChange = 0;
+                int spawn = Random.Next(-randomPrecision, randomPrecision);
+                if (timeSinceLastDimensionChange + spawn > averageTimeBetweenDimChange)
+                {
+                    AddDimension();
+                    timeSinceLastDimensionChange = 0;
+                }
             }
 
             removeEnemies(dm);
             MoveEnemies(dm);
         }
 
-        private void SpawnEnemy(int dimensions)
+        private void SpawnEnemy(DimensionalManager dm)
         {
             int choice = Random.Next(Enum.GetNames(typeof(EnemyType)).Length);
-            addEnemy((EnemyType)choice, new Position(0.0f, 0.0f, 0.0f) + new Position(Random.Next(-350, 350), Random.Next(-350, 350)));
-            //TODO: Write some codez
+            addEnemy(
+                (EnemyType)choice,
+                new Position(Random.Next(-dm.GetScreenWidth() / 2, dm.GetScreenWidth() / 2), Random.Next(-dm.GetScreenHeight() / 2, dm.GetScreenHeight() / 2))
+                );
         }
 
         private void AddDimension()

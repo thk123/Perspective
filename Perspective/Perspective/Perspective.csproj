@@ -107,6 +107,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StraightLineEnemy.cs" />
+    <Compile Include="ZigZag.cs" />
     <Compile Include="DimensionalManager.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyManager.cs" />

@@ -5,20 +5,25 @@ using System.Text;
 
 namespace Perspective
 {
-    class Enemy
+    abstract class Enemy
     {
-        Position pos;
-        EnemyType type;
-        int maxDimensionOfMovement;
-        List<int> forwards = new List<int>();
-        DateTime deathTime;
+        protected Position pos;
+        protected EnemyType type;
+        protected int maxDimensionOfMovement;
+        protected List<int> forwards = new List<int>();
+        protected DateTime deathTime;
 
-        public Enemy(Position pos, EnemyType type, int maxDimensionOfMovement = int.MaxValue, long lifeTime = 1000 * 10)
+        protected static Random random = new Random();
+
+        protected int damageAmount;
+
+        protected Enemy(EnemyType type, Position pos, long lifeTime, int maxDimensionOfMovement, int damageAmount = 20)
         {
             this.pos = pos;
             this.type = type;
             this.maxDimensionOfMovement = maxDimensionOfMovement;
             deathTime = System.DateTime.Now.AddMilliseconds(lifeTime);
+            this.damageAmount = damageAmount;
         }
 
         public void Move(DimensionalManager dm)
@@ -28,52 +33,6 @@ namespace Perspective
                 if (forwards.Count >= maxDimensionOfMovement) { break; }
                 forwards.Add(1);
             }
-            switch (type)
-            {
-                case EnemyType.StraightLine:
-                    {
-                        for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
-                        {
-                            pos.Move(i, forwards[i] * 0.1f);
-                        }
-                        break;
-                    }
-                case EnemyType.Random:
-                    {
-                        for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
-                        {
-                            pos.Move(i, (new Random()).Next(-1, 1));
-                        }
-                        break;
-                    }
-                case EnemyType.ZigZag0:
-                    {
-                        zigZag(0, dm.GetNumberOfActiveDimensions());
-                        break;
-                    }
-                case EnemyType.ZigZag1:
-                    {
-                        zigZag(1, dm.GetNumberOfActiveDimensions());
-                        break;
-                    }
-            }
-        }
-
-        private void zigZag(int i, int numberOfDims)
-        {
-            for (; i <= numberOfDims; i += 2)
-            {
-                pos.Move(i, forwards[i] * 1f);
-                if (Math.Abs(pos.GetPosition(i)) >= 3 * GetWidth(i) && System.DateTime.Now.CompareTo(deathTime) < 0)
-                {
-                    forwards[i] = -forwards[i];
-                }
-            }
-        }
-
-        public EnemyType GetEnemyType()
-        {
-            return type;
         }
 
         public Position GetPosition()
@@ -81,15 +40,24 @@ namespace Perspective
             return pos;
         }
 
+        public EnemyType GetEnemyType()
+        {
+            return type;
+        }
+
         public float GetWidth(int dimension)
         {
             return 32.0f; //return a standard width
+        }
+
+        public int GetDamageAmount()
+        {
+            return damageAmount;
         }
     }
 
     public enum EnemyType
     {
-        Random,
         StraightLine,
         ZigZag0,
         ZigZag1
