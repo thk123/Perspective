@@ -111,3 +111,6 @@ UpgradeLog*.XML
 *.BASE
 *.LOCAL
 *.REMOTE
+*.Debug.cachefile
+*.csproj.Debug.cachefile
+Perspective/Perspective/Perspective.csproj.Debug.cachefile

@@ -26,6 +26,8 @@ namespace Perspective
         //ugly
         public static Texture2D circle;
         public static Texture2D square;
+        public SpriteFont defaultFont14;
+
         public static int SCREEN_WIDTH = 700;
         public static int SCREEN_HEIGHT = 700;
 
@@ -64,6 +66,7 @@ namespace Perspective
 
             Game1.circle = Content.Load<Texture2D>("Art//WhiteCircle");
             Game1.square = Content.Load<Texture2D>("Art//WhiteSquare");
+            defaultFont14 = Content.Load<SpriteFont>("DeafultFont14");
         }
 
         /// <summary>
@@ -90,10 +93,16 @@ namespace Perspective
             dimensionalManager.Update(gameTime, player);
 
             player.detectInput(Keyboard.GetState(), dimensionalManager);
-            enemyManager.removeEnemies(dimensionalManager);
-            enemyManager.MoveEnemies(dimensionalManager);
 
             enemyManager.Update(gameTime, dimensionalManager);
+
+            foreach (Enemy enemy in enemyManager.getEnemies())
+            {
+                if (CollisionManager.CheckCollision(player, enemy, dimensionalManager))
+                {
+                    Console.WriteLine("DEAD at " + gameTime.TotalGameTime.ToString());
+                }
+            }
 
             base.Update(gameTime);
         }
@@ -110,8 +119,49 @@ namespace Perspective
 
             dimensionalManager.Draw(spriteBatch, player);
 
+            drawLocation(spriteBatch, player.getPosition());
+
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+
+        private void drawLocation(SpriteBatch spriteBatch, Position position)
+        {
+            int getPlayerDimension = player.getCurrentDimension();
+            Vector2 stringPosition = Vector2.Zero;
+            spriteBatch.DrawString(defaultFont14, "{", stringPosition, Color.White);
+            stringPosition.X += defaultFont14.MeasureString("{").X;
+
+            string startingPoint = position.GetPosition(0).ToString();
+            spriteBatch.DrawString(defaultFont14, startingPoint, stringPosition, getIndexColour(0, getPlayerDimension));
+            stringPosition.X += defaultFont14.MeasureString(startingPoint).X;
+
+
+            for (int i = 1; i < dimensionalManager.GetNumberOfActiveDimensions(); ++i)
+            {
+                string point = ", " + position.GetPosition(i).ToString();
+                spriteBatch.DrawString(defaultFont14, point, stringPosition, getIndexColour(i, getPlayerDimension));
+                stringPosition.X += defaultFont14.MeasureString(point).X;
+            }
+
+            spriteBatch.DrawString(defaultFont14, "}", stringPosition, Color.White);
+        }
+
+        private Color getIndexColour(int index, int playerIndex)
+        {
+            if (index == playerIndex || index == playerIndex + 1)
+            {
+                return Color.Red;
+            }
+            else if (index == playerIndex + 2 || index == playerIndex + 3)
+            {
+                return Color.Blue;
+            }
+            else
+            {
+                return Color.White;
+            }
         }
 
         private void StartNewGame()

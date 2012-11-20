@@ -18,6 +18,8 @@ namespace Perspective
         Position pos;
         float velocity = 2.0f;
 
+        private const int dimensionsSwitch = 2;
+
         KeyboardState oldState;
 
         public Player(Position pos)
@@ -29,6 +31,11 @@ namespace Perspective
         public Position getPosition()
         {
             return pos;
+        }
+
+        public float getRadius()
+        {
+            return 16.0f;
         }
 
         public void detectInput(KeyboardState kboard, DimensionalManager dm)
@@ -80,12 +87,22 @@ namespace Perspective
 
             if (kboard.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space) )
             {
-                //currentDimension = currentDimension + 4 <= dm.GetNumberOfActiveDimensions() ? currentDimension + 4 : 0;
                 dm.IncreaseNumberOfActiveDimensions();
+            }
+
+            
+            if (kboard.IsKeyDown(Keys.Tab) && oldState.IsKeyUp(Keys.Tab))
+            {
+                currentDimension = currentDimension + dimensionsSwitch <= dm.GetNumberOfActiveDimensions() ? currentDimension + dimensionsSwitch : 0;
             }
 
             oldState = kboard;
             
+        }
+
+        public int getCurrentDimension()
+        {
+            return currentDimension;
         }
     }
 
