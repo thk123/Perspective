@@ -21,7 +21,7 @@ namespace Perspective
 
         public void Move(DimensionalManager dm)
         {
-            while (forwards.Count < dm.GetNumberOfActiveDimensions())
+            while (forwards.Count <= dm.GetNumberOfActiveDimensions())
             {
                 forwards.Add(1);
             }
@@ -58,7 +58,7 @@ namespace Perspective
 
         private void zigZag(int i, int numberOfDims)
         {
-            for (; i < numberOfDims; i += 2)
+            for (; i <= numberOfDims; i += 2)
             {
                 pos.Move(i, forwards[i] * 1f);
                 if (Math.Abs(pos.GetPosition(i)) >= 3 * GetWidth(i) && System.DateTime.Now.CompareTo(deathTime) < 0)
