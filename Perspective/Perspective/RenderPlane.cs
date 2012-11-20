@@ -65,7 +65,7 @@ namespace Perspective
                 Vector2 planarPosition = getPlanarPosition(enemyPosition);
 
                 //if we are rendering in 1D, the GetSize takes in to account the distance in the y axis
-                float size = GetSize(enemy);
+                float size = 2 * GetSize(enemy);
 
                 if (IsInRenderFrame(planarPosition, size))
                 {
@@ -137,13 +137,13 @@ namespace Perspective
                 }
                 else
                 {
-                    totalDistance += (dimOffset * dimOffset);
+                    totalDistance += dimOffset * dimOffset;
                 }
             }
 
             //Otherwise will be some deg 2 polynomial based on how far away it is in each dimension
 
-            float radius = /*(float)Math.Pow(2.0,  dimensionalManager.GetNumberOfActiveDimensions() -1)  */ (float)Math.Sqrt(enemy.GetWidth() * enemy.GetWidth() - totalDistance);
+            float radius =  (float)Math.Sqrt(enemy.GetWidth() * enemy.GetWidth() - totalDistance);
             return radius;
         }
 

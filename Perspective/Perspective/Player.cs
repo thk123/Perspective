@@ -33,7 +33,7 @@ namespace Perspective
 
         public float getRadius()
         {
-            return 8.0f;
+            return 16.0f;
         }
 
         public void detectInput(KeyboardState kboard, DimensionalManager dm)

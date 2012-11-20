@@ -83,7 +83,7 @@ namespace Perspective
 
         public float GetWidth()
         {
-            return 8.0f; //return a standard width
+            return 16.0f; //return a standard width
         }
     }
 
