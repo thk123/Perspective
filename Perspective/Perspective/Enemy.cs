@@ -61,7 +61,7 @@ namespace Perspective
             for (; i <= numberOfDims; i += 2)
             {
                 pos.Move(i, forwards[i] * 1f);
-                if (Math.Abs(pos.GetPosition(i)) >= 3 * GetWidth(i) && System.DateTime.Now.CompareTo(deathTime) < 0)
+                if (Math.Abs(pos.GetPosition(i)) >= 3 * GetWidth() && System.DateTime.Now.CompareTo(deathTime) < 0)
                 {
                     forwards[i] = -forwards[i];
                 }
@@ -78,9 +78,9 @@ namespace Perspective
             return pos;
         }
 
-        public float GetWidth(int dimension)
+        public float GetWidth()
         {
-            return 32.0f; //return a standard width
+            return 8.0f; //return a standard width
         }
     }
 }

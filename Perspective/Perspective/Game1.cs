@@ -90,10 +90,16 @@ namespace Perspective
             dimensionalManager.Update(gameTime, player);
 
             player.detectInput(Keyboard.GetState(), dimensionalManager);
-            enemyManager.removeEnemies(dimensionalManager);
-            enemyManager.MoveEnemies(dimensionalManager);
 
             enemyManager.Update(gameTime, dimensionalManager);
+
+            foreach (Enemy enemy in enemyManager.getEnemies())
+            {
+                if (CollisionManager.CheckCollision(player, enemy, dimensionalManager))
+                {
+                    Console.WriteLine("DEAD at " + gameTime.TotalGameTime.ToString());
+                }
+            }
 
             base.Update(gameTime);
         }

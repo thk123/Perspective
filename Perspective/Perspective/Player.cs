@@ -31,6 +31,11 @@ namespace Perspective
             return pos;
         }
 
+        public float getRadius()
+        {
+            return 8.0f;
+        }
+
         public void detectInput(KeyboardState kboard, DimensionalManager dm)
         {
             if (kboard.IsKeyDown(Keys.A))
