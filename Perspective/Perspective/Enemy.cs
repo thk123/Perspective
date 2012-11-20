@@ -9,13 +9,15 @@ namespace Perspective
     {
         Position pos;
         EnemyType type;
+        int maxDimensionOfMovement;
         List<int> forwards = new List<int>();
         DateTime deathTime;
 
-        public Enemy(Position pos, EnemyType type, long lifeTime = 1000 * 10)
+        public Enemy(Position pos, EnemyType type, int maxDimensionOfMovement = int.MaxValue, long lifeTime = 1000 * 10)
         {
             this.pos = pos;
             this.type = type;
+            this.maxDimensionOfMovement = maxDimensionOfMovement;
             deathTime = System.DateTime.Now.AddMilliseconds(lifeTime);
         }
 
@@ -23,6 +25,7 @@ namespace Perspective
         {
             while (forwards.Count <= dm.GetNumberOfActiveDimensions())
             {
+                if (forwards.Count >= maxDimensionOfMovement) { break; }
                 forwards.Add(1);
             }
             switch (type)
@@ -45,12 +48,12 @@ namespace Perspective
                     }
                 case EnemyType.ZigZag0:
                     {
-                        zigZag(1, dm.GetNumberOfActiveDimensions());
+                        zigZag(0, dm.GetNumberOfActiveDimensions());
                         break;
                     }
-                case EnemyType.ZigZag1 :
+                case EnemyType.ZigZag1:
                     {
-                        zigZag(0, dm.GetNumberOfActiveDimensions());
+                        zigZag(1, dm.GetNumberOfActiveDimensions());
                         break;
                     }
             }
@@ -82,5 +85,13 @@ namespace Perspective
         {
             return 8.0f; //return a standard width
         }
+    }
+
+    public enum EnemyType
+    {
+        Random,
+        StraightLine,
+        ZigZag0,
+        ZigZag1
     }
 }
