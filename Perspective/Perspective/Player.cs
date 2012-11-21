@@ -200,19 +200,19 @@ namespace Perspective
             if (Math.Abs(pos.GetPosition(currentDimension + 1)) > dm.GetScreenHeight() / 2)
             {
                 pos.Move(currentDimension + 1, -velocityXY.Y);
-                velocityXY.X = 0;
+                velocityXY.Y = 0;
             }
             pos.Move(currentDimension + 2, velocityZW.X);
             if (Math.Abs(pos.GetPosition(currentDimension + 2)) > dm.GetScreenWidth() / 2)
             {
                 pos.Move(currentDimension + 2, -velocityZW.X);
-                velocityXY.X = 0;
+                velocityZW.X = 0;
             }
             pos.Move(currentDimension + 3, velocityZW.Y);
             if (Math.Abs(pos.GetPosition(currentDimension + 3)) > dm.GetScreenHeight() / 2)
             {
                 pos.Move(currentDimension + 3, -velocityZW.Y);
-                velocityXY.X = 0;
+                velocityZW.Y = 0;
             }
 
             if (kboard.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space) )
