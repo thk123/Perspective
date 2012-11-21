@@ -9,7 +9,7 @@ namespace Perspective
     {
         public StraightLineEnemy(EnemyType type, Position pos, long lifeTime, int maxDimensionOfMovement) : base(type, pos, lifeTime, maxDimensionOfMovement) {}
 
-        public void Move(DimensionalManager dm)
+        public override void Move(DimensionalManager dm)
         {
             base.Move(dm);
             for (int i = 0; i < dm.GetNumberOfActiveDimensions(); ++i)
