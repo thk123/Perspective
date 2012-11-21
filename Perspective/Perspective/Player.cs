@@ -16,7 +16,12 @@ namespace Perspective
     {
         int currentDimension = 0;
         Position pos;
-        float velocity = 2.0f;
+        Vector2 velocityXY;
+        Vector2 velocityZW;
+
+        const float maxVelocity = 13.0f;
+        const float acceleration = 13.0f;
+        const float decelartion = 13.0f;
 
         private const int dimensionsSwitch = 2;
 
@@ -32,6 +37,9 @@ namespace Perspective
             oldState = Keyboard.GetState();
 
             currentHealth = startingHealth;
+
+            velocityXY = Vector2.Zero;
+            velocityZW = Vector2.Zero;
         }
 
         public Position getPosition()
@@ -55,26 +63,77 @@ namespace Perspective
             return currentHealth;
         }
 
-        public void detectInput(KeyboardState kboard, DimensionalManager dm)
+        public void detectInput(KeyboardState kboard, GameTime gameTime, DimensionalManager dm)
         {
+            /*if (kboard.IsKeyDown(Keys.A))
+            {
+                velocityXY.X -= acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f );
+                velocityXY.X = Math.Min(velocityXY.X, -maxVelocity);
+                //pos.Move(currentDimension, -velocity);
+            }
+            else if (kboard.IsKeyDown(Keys.D))
+            {
+                //pos.Move(currentDimension, velocity);
+                velocityXY.X += acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f );
+                velocityXY.X = Math.Max(velocityXY.X, maxVelocity);
+            }
+            else if(velocityXY.X > 0)
+            {
+                velocityXY.X -= decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f );
+                velocityXY.X = Math.Max(velocityXY.X, 0);
+            }
+            else if(velocityXY.X < 0)
+            {
+                velocityXY.X += decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                velocityXY.X = Math.Min(velocityXY.X, 0);
+            }*/
+
             if (kboard.IsKeyDown(Keys.A))
             {
-                pos.Move(currentDimension, -velocity);
+                //pos.Move(currentDimension + 1, -velocity);
+                velocityXY.X -= acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                velocityXY.X = Math.Max(velocityXY.X, -maxVelocity);
             }
-            if (kboard.IsKeyDown(Keys.D))
+            else if (kboard.IsKeyDown(Keys.D))
             {
-                pos.Move(currentDimension, velocity);
+                //pos.Move(currentDimension + 1, velocity);
+                velocityXY.X += acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                velocityXY.X = Math.Min(velocityXY.X, maxVelocity);
+            }
+            else if (velocityXY.X < 0)
+            {
+                velocityXY.X += decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                velocityXY.X = Math.Min(velocityXY.X, 0);
+            }
+            else if (velocityXY.X > 0)
+            {
+                velocityXY.X -= decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                velocityXY.X = Math.Max(velocityXY.X, 0);
             }
 
             if (dm.GetNumberOfActiveDimensions() > currentDimension + 1)
             {
                 if (kboard.IsKeyDown(Keys.W))
                 {
-                    pos.Move(currentDimension + 1, -velocity);
+                    //pos.Move(currentDimension + 1, -velocity);
+                    velocityXY.Y -= acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f );
+                    velocityXY.Y = Math.Max(velocityXY.Y, -maxVelocity);
                 }
-                if (kboard.IsKeyDown(Keys.S))
+                else if (kboard.IsKeyDown(Keys.S))
                 {
-                    pos.Move(currentDimension + 1, velocity);
+                    //pos.Move(currentDimension + 1, velocity);
+                    velocityXY.Y += acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityXY.Y = Math.Min(velocityXY.Y, maxVelocity);
+                }
+                else if(velocityXY.Y < 0)
+                {
+                    velocityXY.Y += decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityXY.Y = Math.Min(velocityXY.Y, 0);
+                }
+                else if(velocityXY.Y > 0)
+                {
+                    velocityXY.Y -= decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityXY.Y = Math.Max(velocityXY.Y, 0);
                 }
             }
 
@@ -82,25 +141,60 @@ namespace Perspective
             {
                 if(kboard.IsKeyDown(Keys.Up))
                 {
-                    pos.Move(currentDimension + 3, -velocity);
+                    //pos.Move(currentDimension + 3, -velocityXY);
+                    velocityZW.Y -= acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.Y = Math.Max(velocityZW.Y, -maxVelocity);
                 }
-                if (kboard.IsKeyDown(Keys.Down))
+                else if (kboard.IsKeyDown(Keys.Down))
                 {
-                    pos.Move(currentDimension + 3, velocity);
+                    //pos.Move(currentDimension + 3, velocityXY);
+                    velocityZW.Y += acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.Y = Math.Min(velocityZW.Y, maxVelocity);
                 }
+                else if (velocityZW.Y > 0)
+                {
+                    velocityZW.Y -= decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.Y = Math.Max(velocityZW.Y, 0);
+                }
+                else if (velocityZW.Y < 0)
+                {
+                    velocityZW.Y += decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.Y = Math.Min(velocityZW.Y, 0);
+                }
+
             }
 
             if (dm.GetNumberOfActiveDimensions() > currentDimension + 2)
             {
                 if (kboard.IsKeyDown(Keys.Right))
                 {
-                    pos.Move(currentDimension + 2, velocity);
+                    //pos.Move(currentDimension + 2, velocityXY);
+                    velocityZW.X += acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.X = Math.Min(velocityZW.X, maxVelocity);
                 }
-                if (kboard.IsKeyDown(Keys.Left))
+                else if (kboard.IsKeyDown(Keys.Left))
                 {
-                    pos.Move(currentDimension + 2, -velocity);
+                    //pos.Move(currentDimension + 2, -velocityXY);
+                    velocityZW.X -= acceleration * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.X = Math.Max(velocityZW.X, -maxVelocity);
+                }
+                else if (velocityZW.X > 0)
+                {
+                    velocityZW.X -= decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.X = Math.Max(velocityZW.X, 0);
+                }
+                else if (velocityZW.X < 0)
+                {
+                    velocityZW.X += decelartion * ((float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    velocityZW.X = Math.Min(velocityZW.X, 0);
                 }
             }
+
+            pos.Move(currentDimension, velocityXY.X);
+            pos.Move(currentDimension+1, velocityXY.Y);
+
+            pos.Move(currentDimension + 2, velocityZW.X);
+            pos.Move(currentDimension + 3, velocityZW.Y);
 
             if (kboard.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space) )
             {

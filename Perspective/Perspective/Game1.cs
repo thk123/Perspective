@@ -92,7 +92,7 @@ namespace Perspective
 
             dimensionalManager.Update(gameTime, player);
 
-            player.detectInput(Keyboard.GetState(), dimensionalManager);
+            player.detectInput(Keyboard.GetState(), gameTime, dimensionalManager);
 
             enemyManager.Update(gameTime, dimensionalManager);
 
