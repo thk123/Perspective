@@ -26,10 +26,7 @@ namespace Perspective
         {
             positions = new List<float>(dimensions);
 
-            for (int i = 0; i < dimensions; ++i)
-            {
-                positions.Add(defaultPosition);
-            }
+            reset(dimensions);
         }
 
         public int GetNumberOfDimensions()
@@ -96,6 +93,16 @@ namespace Perspective
                 largerPos.SetPosition(current, position1.GetPosition(current) + position2.GetPosition(current));
             }
             return largerPos;
+        }
+
+        public void reset(int dimensions)
+        {
+            positions.Clear();
+
+            for (int i = 0; i < dimensions; ++i)
+            {
+                positions.Add(defaultPosition);
+            }
         }
     }
 }

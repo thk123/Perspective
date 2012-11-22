@@ -14,7 +14,7 @@ namespace Perspective
 {
     class Player
     {
-        int currentDimension = 0;
+        int currentDimension;
         Position pos;
         Vector2 velocityXY;
         Vector2 velocityZW;
@@ -23,7 +23,7 @@ namespace Perspective
         const float acceleration = 13.0f;
         const float decelartion = 13.0f;
 
-        private const int dimensionsSwitch = 2;
+        private const int dimensionsSwitch = 4;
 
         KeyboardState oldState;
 
@@ -36,10 +36,7 @@ namespace Perspective
             this.pos = pos;
             oldState = Keyboard.GetState();
 
-            currentHealth = startingHealth;
-
-            velocityXY = Vector2.Zero;
-            velocityZW = Vector2.Zero;
+            reset();
         }
 
         public Position getPosition()
@@ -223,7 +220,7 @@ namespace Perspective
             
             if (kboard.IsKeyDown(Keys.Tab) && oldState.IsKeyUp(Keys.Tab))
             {
-                currentDimension = currentDimension + dimensionsSwitch <= dm.GetNumberOfActiveDimensions() ? currentDimension + dimensionsSwitch : 0;
+                currentDimension = currentDimension + dimensionsSwitch < dm.GetNumberOfActiveDimensions() ? currentDimension + dimensionsSwitch : 0;
             }
 
             oldState = kboard;
@@ -233,6 +230,15 @@ namespace Perspective
         public int getCurrentDimension()
         {
             return currentDimension;
+        }
+
+        public void reset()
+        {
+            pos.reset(1);
+            currentHealth = startingHealth;
+            currentDimension = 0;
+            velocityXY = Vector2.Zero;
+            velocityZW = Vector2.Zero;
         }
     }
 

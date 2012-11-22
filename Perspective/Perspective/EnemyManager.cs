@@ -30,6 +30,13 @@ namespace Perspective
             Random = new Random();
         }
 
+        public void reset()
+        {
+            enemies.Clear();
+            timeSinceLastDimensionChange = 0;
+            timeSinceLastSpawn = 0;
+        }
+
         public void StartNewGame()
         {
             timeSinceLastDimensionChange = 0;

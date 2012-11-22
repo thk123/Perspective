@@ -32,7 +32,8 @@ namespace Perspective
         public void StartNewGame(int startingDimensionCount)
         {
             //numberOfActiveDimensions = startingDimensionCount;
-
+            numberOfActiveDimensions = 0;
+            currentRenderPlaneWidth = 700;
             renderPlanes.Clear();
             for (int i = 0; i < startingDimensionCount; ++i)
             {

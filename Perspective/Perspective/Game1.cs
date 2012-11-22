@@ -92,6 +92,12 @@ namespace Perspective
 
             dimensionalManager.Update(gameTime, player);
 
+            KeyboardState kboard = Keyboard.GetState();
+            if (kboard.IsKeyDown(Keys.R))
+            {
+                StartNewGame();
+            }
+
             player.detectInput(Keyboard.GetState(), gameTime, dimensionalManager);
 
             enemyManager.Update(gameTime, dimensionalManager);
@@ -173,7 +179,9 @@ namespace Perspective
 
         private void StartNewGame()
         {
+            enemyManager.reset();
             dimensionalManager.StartNewGame(1);
+            player.reset();
         }
 
         private bool CheckExit()
