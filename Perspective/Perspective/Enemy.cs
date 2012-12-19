@@ -54,6 +54,11 @@ namespace Perspective
         {
             return damageAmount;
         }
+
+        public override string ToString()
+        {
+            return pos.ToString();
+        }
     }
 
     public enum EnemyType

@@ -100,7 +100,7 @@ namespace Perspective
 
             player.detectInput(Keyboard.GetState(), gameTime, dimensionalManager);
 
-            enemyManager.Update(gameTime, dimensionalManager);
+            enemyManager.Update(gameTime, dimensionalManager, player);
 
             foreach (Enemy enemy in enemyManager.getEnemies())
             {

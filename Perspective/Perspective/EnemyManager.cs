@@ -58,6 +58,7 @@ namespace Perspective
                 }
                 if (count == dm.GetNumberOfActiveDimensions())
                 {
+                    Console.WriteLine("Removing enemy: " + en.ToString());
                     removeEnemy(en);
                 }
             }
@@ -96,7 +97,7 @@ namespace Perspective
             enemies.Remove(n);
         }
 
-        public void Update(GameTime gameTime, DimensionalManager dm)
+        public void Update(GameTime gameTime, DimensionalManager dm, Player player)
         {
             timeSinceLastSpawn += gameTime.ElapsedGameTime.Milliseconds;
             timeSinceLastDimensionChange += gameTime.ElapsedGameTime.Milliseconds;
@@ -105,7 +106,7 @@ namespace Perspective
                 int spawn = Random.Next(-randomPrecision, randomPrecision);
                 if (timeSinceLastSpawn + spawn > averageTimeBetweenSpawn)
                 {
-                    SpawnEnemy(dm);
+                    SpawnEnemy(dm, player);
                     timeSinceLastSpawn = 0;
                 }
             }
@@ -123,12 +124,30 @@ namespace Perspective
             MoveEnemies(dm);
         }
 
-        private void SpawnEnemy(DimensionalManager dm)
+        private void SpawnEnemy(DimensionalManager dm, Player player)
         {
-            int choice = Random.Next(Enum.GetNames(typeof(EnemyType)).Length);
+            int enemyType = Random.Next(Enum.GetNames(typeof(EnemyType)).Length);
+            Position playerPos = player.getPosition();
+
+            float[] position = new float[dm.GetNumberOfActiveDimensions()];
+            double offSet;
+            Random random = new Random();
+            for(int i = 0; i< position.Length; ++i)
+            {
+                do
+                {
+                    offSet = random.NextDouble() - 0.5;
+                    position[i] =
+                        i % 2 == 0 ?
+                        (float)(playerPos.GetPosition(i) + dm.GetScreenWidth() * offSet) :
+                        (float)(playerPos.GetPosition(i) + dm.GetScreenHeight() * offSet);
+                }
+                while (Math.Abs(playerPos.GetPosition(i) - position[i]) < player.getRadius());
+            }
+   
             addEnemy(
-                (EnemyType)choice,
-                new Position(Random.Next(-dm.GetScreenWidth() / 2, dm.GetScreenWidth() / 2), Random.Next(-dm.GetScreenHeight() / 2, dm.GetScreenHeight() / 2))
+                (EnemyType)enemyType,
+                new Position(position)
                 );
         }
 
