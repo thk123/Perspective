@@ -110,6 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DimensionUnlockedAnimation.cs" />
     <Compile Include="StraightLineEnemy.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="ZigZag.cs" />

@@ -26,7 +26,7 @@ namespace Perspective
         //ugly
         public static Texture2D circle;
         public static Texture2D square;
-        public SpriteFont defaultFont14;
+        public static SpriteFont defaultFont14;
 
         public static int SCREEN_WIDTH = 700;
         public static int SCREEN_HEIGHT = 700;
@@ -50,8 +50,8 @@ namespace Perspective
         {
             player = new Player(new Position(1));
             enemyManager = new EnemyManager();
-            dimensionalManager = new DimensionalManager(enemyManager);
-            StartNewGame();
+            
+            
             base.Initialize();
         }
 
@@ -67,6 +67,10 @@ namespace Perspective
             Game1.circle = Content.Load<Texture2D>("Art//WhiteCircle");
             Game1.square = Content.Load<Texture2D>("Art//WhiteSquare");
             defaultFont14 = Content.Load<SpriteFont>("DeafultFont14");
+
+            dimensionalManager = new DimensionalManager(enemyManager);
+
+            StartNewGame();
         }
 
         /// <summary>

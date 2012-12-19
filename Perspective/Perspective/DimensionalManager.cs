@@ -14,7 +14,11 @@ namespace Perspective
         List<RenderPlane> renderPlanes;
         EnemyManager enemyManager;
 
+        DimensionUnlockedAnimation dimensionalUpdateDrawer;
+
         float currentRenderPlaneWidth = 700;
+
+        int numberOfUnlockedDimensions;
 
         public DimensionalManager(EnemyManager enemyManager)
         {
@@ -27,6 +31,10 @@ namespace Perspective
             //renderPlanes.Add(secondRenderPlane);
 
             this.enemyManager = enemyManager;
+
+            numberOfUnlockedDimensions = 0;
+
+            dimensionalUpdateDrawer = new DimensionUnlockedAnimation(Game1.defaultFont14);
         }
 
         public void StartNewGame(int startingDimensionCount)
@@ -39,6 +47,10 @@ namespace Perspective
             {
                 addRenderPlane();
             }
+
+            numberOfUnlockedDimensions = 0;
+
+            dimensionalUpdateDrawer.Init();
 
         }
 
@@ -79,7 +91,7 @@ namespace Perspective
 
         public bool CanIncreaseNumberOfActiveDimensions()
         {
-            return true;
+            return numberOfUnlockedDimensions > 0;
         }
         
         public void IncreaseNumberOfActiveDimensions()
@@ -87,11 +99,18 @@ namespace Perspective
             if (CanIncreaseNumberOfActiveDimensions())
             {
                 addRenderPlane();
+                --numberOfUnlockedDimensions;
             }
             else
             {
                 Console.WriteLine("Error: Attempted to increase number of active dimensions when couldn't");
             }
+        }
+
+        public void AllowNextLevel()
+        {
+            ++numberOfUnlockedDimensions;
+            dimensionalUpdateDrawer.AddUnlock();
         }
 
         public int GetScreenHeight()
@@ -110,6 +129,8 @@ namespace Perspective
             {
                 renderplane.UpdatePosition(player.getPosition());
             }
+
+            dimensionalUpdateDrawer.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch, Player player)
@@ -118,6 +139,8 @@ namespace Perspective
             {
                 renderPlane.Render(enemyManager, player, spriteBatch);
             }
+
+            dimensionalUpdateDrawer.Draw(spriteBatch);
         }
     }
 }
