@@ -204,7 +204,7 @@ namespace Perspective
 
                         player.detectInput(Keyboard.GetState(), gameTime, dimensionalManager);
 
-            enemyManager.Update(gameTime, dimensionalManager, player);
+                        enemyManager.Update(gameTime, dimensionalManager, player);
 
                         foreach (Enemy enemy in enemyManager.getEnemies())
                         {
@@ -266,9 +266,10 @@ namespace Perspective
 
                 case GameState.inGame:
                     {
-                        dimensionalManager.Draw(spriteBatch, player);
 
+                        //draw the player underneath enemies so can see what is killing you
                         drawLocation(spriteBatch, player.getPosition());
+                        dimensionalManager.Draw(spriteBatch, player);
 
                         String playerHealthString = "Health: " + player.GetCurrentHealth();
                         Vector2 playerHealthStringPosition = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) - defaultFont14.MeasureString(playerHealthString);
