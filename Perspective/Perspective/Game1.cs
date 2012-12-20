@@ -27,10 +27,22 @@ namespace Perspective
         public static Texture2D circle;
         public static Texture2D square;
         public static SpriteFont defaultFont14;
+        public Texture2D logo;
 
         public static int SCREEN_WIDTH = 700;
         public static int SCREEN_HEIGHT = 700;
 
+        GameState gameState;
+
+        KeyboardState oldState;
+
+        int fadeState;
+
+        int fadeTime = 1 * 1000;
+
+        int levelSelected = 1;
+
+        int maxLevelUnlocked = 1;
 
         public Game1()
         {
@@ -38,6 +50,8 @@ namespace Perspective
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             Content.RootDirectory = "Content";
+
+            gameState = GameState.fadeIn;
         }
 
         /// <summary>
@@ -50,8 +64,9 @@ namespace Perspective
         {
             player = new Player(new Position(1));
             enemyManager = new EnemyManager();
-            
-            
+            gameState = GameState.fadeIn;
+            fadeState = 0;
+            oldState = Keyboard.GetState();
             base.Initialize();
         }
 
@@ -67,10 +82,8 @@ namespace Perspective
             Game1.circle = Content.Load<Texture2D>("Art//WhiteCircle");
             Game1.square = Content.Load<Texture2D>("Art//WhiteSquare");
             defaultFont14 = Content.Load<SpriteFont>("DeafultFont14");
-
+            logo = Content.Load<Texture2D>("Art//FrontEnd//logo");
             dimensionalManager = new DimensionalManager(enemyManager);
-
-            StartNewGame();
         }
 
         /// <summary>
@@ -89,34 +102,132 @@ namespace Perspective
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (CheckExit())
+            switch (gameState)
             {
-                this.Exit();
-            }
-
-            dimensionalManager.Update(gameTime, player);
-
-            KeyboardState kboard = Keyboard.GetState();
-            if (kboard.IsKeyDown(Keys.R))
-            {
-                StartNewGame();
-            }
-
-            player.detectInput(Keyboard.GetState(), gameTime, dimensionalManager);
-
-            enemyManager.Update(gameTime, dimensionalManager);
-
-            foreach (Enemy enemy in enemyManager.getEnemies())
-            {
-                if (CollisionManager.CheckCollision(player, enemy, dimensionalManager))
-                {
-                    if(player.ApplyDamage(enemy.GetDamageAmount()))
+                case GameState.fadeIn:
                     {
-                        Console.WriteLine("DIE");
-                    }
-                }
-            }
+                        if (CheckExit(oldState))
+                        {
+                            this.Exit();
+                        }
 
+                        if (fadeState > fadeTime)
+                        {
+                            gameState = GameState.frontEnd;
+                        }
+                        else
+                        {
+                            fadeState += gameTime.ElapsedGameTime.Milliseconds;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                        {
+                            gameState = GameState.frontEnd;
+                        }
+                    }
+                    break;
+
+                case GameState.frontEnd:
+                    {
+                        if (CheckExit(oldState))
+                        {
+                            this.Exit();
+                        }
+                        //arrow and space handling
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
+                        {
+                            fadeState = 0;
+                            gameState = GameState.fadeOut;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.A) && oldState.IsKeyUp(Keys.A))
+                        {
+                            if (levelSelected > 1)
+                            {
+                                --levelSelected;
+                            }
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.D) && oldState.IsKeyUp(Keys.D))
+                        {
+                            if (levelSelected < maxLevelUnlocked)
+                            {
+                                ++levelSelected;
+                            }
+                        }
+                    }
+                    break;
+
+                case GameState.fadeOut:
+                    {
+                        if (CheckExit(oldState))
+                        {
+                            this.Exit();
+                        }
+                        if (fadeState > fadeTime)
+                        {
+                            StartNewGame(levelSelected);
+                            gameState = GameState.inGame;
+                        }
+                        else
+                        {
+                            fadeState += gameTime.ElapsedGameTime.Milliseconds;
+                        }
+
+                        if (fadeState >= 0 && Keyboard.GetState().IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
+                        {
+                            gameState = GameState.inGame;
+                            StartNewGame(levelSelected);
+                        }
+                    }
+                    break;
+
+                case GameState.inGame:
+                    {
+                        if (CheckExit(oldState))
+                        {
+                            if (maxLevelUnlocked < dimensionalManager.GetNumberOfActiveDimensions())
+                            {
+                                maxLevelUnlocked = dimensionalManager.GetNumberOfActiveDimensions();
+                            }
+                            levelSelected = maxLevelUnlocked;
+                            gameState = GameState.fadeIn;
+                            fadeState = 0;
+                        }
+                        dimensionalManager.Update(gameTime, player);
+
+                        KeyboardState kboard = Keyboard.GetState();
+                        if (kboard.IsKeyDown(Keys.R) && oldState.IsKeyUp(Keys.R))
+                        {
+                            StartNewGame();
+                        }
+
+                        player.detectInput(Keyboard.GetState(), gameTime, dimensionalManager);
+
+                        enemyManager.Update(gameTime, dimensionalManager);
+
+                        foreach (Enemy enemy in enemyManager.getEnemies())
+                        {
+                            if (CollisionManager.CheckCollision(player, enemy, dimensionalManager))
+                            {
+                                if (player.ApplyDamage(enemy.GetDamageAmount()))
+                                {
+                                    gameState = GameState.fadeIn;
+                                    fadeState = 0;
+                                    if (maxLevelUnlocked < dimensionalManager.GetNumberOfActiveDimensions())
+                                    {
+                                        maxLevelUnlocked = dimensionalManager.GetNumberOfActiveDimensions();
+                                    }
+                                    levelSelected = maxLevelUnlocked;
+                                }
+                            }
+                        }
+
+                    }
+                    break;
+
+            }
+            oldState = Keyboard.GetState();
             base.Update(gameTime);
         }
 
@@ -126,17 +237,46 @@ namespace Perspective
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
+            switch (gameState)
+            {
+                case GameState.fadeIn:
+                    {
+                        float alpha = ((float)fadeState / (float)fadeTime);
+                        spriteBatch.Draw(logo, Vector2.Zero, Color.White * alpha);
+                        spriteBatch.DrawString(defaultFont14, levelSelected.ToString(), new Vector2(345, 324), Color.White * alpha);
+                    }
+                    break;
+                case GameState.frontEnd:
+                    {
+                        spriteBatch.Draw(logo, Vector2.Zero, Color.White);
+                        spriteBatch.DrawString(defaultFont14, levelSelected.ToString(), new Vector2(345, 324), Color.White);
+                    }
+                    break;
 
-            dimensionalManager.Draw(spriteBatch, player);
+                case GameState.fadeOut:
+                    {
+                        float alpha = 1.0f - ((float)fadeState / (float)fadeTime);
+                        spriteBatch.Draw(logo, Vector2.Zero, Color.White * alpha);
+                        spriteBatch.DrawString(defaultFont14, levelSelected.ToString(), new Vector2(345, 324), Color.White * alpha);
+                    }
+                    break;
 
-            drawLocation(spriteBatch, player.getPosition());
+                case GameState.inGame:
+                    {
+                        dimensionalManager.Draw(spriteBatch, player);
 
-            String playerHealthString = "Health: " + player.GetCurrentHealth();
-            Vector2 playerHealthStringPosition = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) - defaultFont14.MeasureString(playerHealthString);
-            spriteBatch.DrawString(defaultFont14, playerHealthString, playerHealthStringPosition, Color.Red);
+                        drawLocation(spriteBatch, player.getPosition());
+
+                        String playerHealthString = "Health: " + player.GetCurrentHealth();
+                        Vector2 playerHealthStringPosition = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) - defaultFont14.MeasureString(playerHealthString);
+                        spriteBatch.DrawString(defaultFont14, playerHealthString, playerHealthStringPosition, Color.Red);
+
+                    }
+                    break;
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -181,16 +321,25 @@ namespace Perspective
             }
         }
 
-        private void StartNewGame()
+        private void StartNewGame(int startLevel = 1)
         {
             enemyManager.reset();
-            dimensionalManager.StartNewGame(1);
+            dimensionalManager.StartNewGame(startLevel);
             player.reset();
         }
 
-        private bool CheckExit()
+        private bool CheckExit(KeyboardState oldState)
         {
-            return Keyboard.GetState().IsKeyDown(Keys.Escape);
+            return Keyboard.GetState().IsKeyDown(Keys.Escape) && oldState.IsKeyUp(Keys.Escape);
+        }
+
+        enum GameState
+        {
+            fadeIn,
+            frontEnd,
+            fadeOut,
+            inGame,
+            dead,
         }
     }
 }

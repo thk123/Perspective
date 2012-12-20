@@ -214,7 +214,10 @@ namespace Perspective
 
             if (kboard.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space) )
             {
-                dm.IncreaseNumberOfActiveDimensions();
+                if (dm.CanIncreaseNumberOfActiveDimensions())
+                {
+                    dm.IncreaseNumberOfActiveDimensions();
+                }
             }
 
             
